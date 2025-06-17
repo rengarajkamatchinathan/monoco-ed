@@ -17,16 +17,18 @@ function App() {
     setTerraformData(null);
   };
 
+  console.log('DATA: ',terraformData)
+
   return (
     <>
-      {!terraformData ? (
+      {/* {!terraformData ? (
         <PromptPage onTerraformGenerated={handleTerraformGenerated} />
       ) : (
         <IDE terraformData={mockTerraformData} onBackToPrompt={handleBackToPrompt} />
-       )}
+       )} */}
 
       {/* Test Mock Data */}
-      {/* <IDE terraformData={mockTerraformData} onBackToPrompt={handleBackToPrompt} /> */}
+      <IDE terraformData={mockTerraformData} onBackToPrompt={handleBackToPrompt} />
     </>
   );
 }

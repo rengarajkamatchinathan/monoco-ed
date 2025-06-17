@@ -12,11 +12,18 @@ const FileTree: React.FC<FileTreeProps> = ({ files, selectedFile, onFileSelect }
   const [collapsed, setCollapsed] = React.useState(false);
 
   const getFileIcon = (fileName: string) => {
-    if (fileName.endsWith('.tf')) {
-      return <File className="w-4 h-4 text-purple-400" />;
-    }
-    return <File className="w-4 h-4 text-gray-400" />;
+    let icon = 'insert_drive_file';
+    if (fileName.endsWith('.tf')) icon = 'code';
+    else if (fileName.endsWith('.json')) icon = 'data_object';
+    else if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) icon = 'description';
+  
+    return (
+      <span className="material-symbols-outlined text-purple-400 text-sm leading-none">
+        {icon}
+      </span>
+    );
   };
+  
 
   return (
     <div className="bg-[#252526] h-full border-r border-[#3c3c3c] animate-fadeIn">

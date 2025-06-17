@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 
 interface CodeEditorProps {
@@ -8,11 +8,24 @@ interface CodeEditorProps {
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ content, fileName, onChange }) => {
+  const [editorContent, setEditorContent] = useState(content);
+
+  useEffect(() => {
+    setEditorContent(content);
+  }, [content]); // Sync external content changes
+
   const getLanguage = (fileName: string) => {
     if (fileName.endsWith('.tf')) return 'hcl';
     if (fileName.endsWith('.json')) return 'json';
     if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) return 'yaml';
     return 'plaintext';
+  };
+
+  const handleEditorChange = (value?: string) => {
+    const updatedValue = value || '';
+    setEditorContent(updatedValue);       // Update internal state
+    onChange?.(updatedValue);             // Call parent change handler
+    console.log('UPDATED: ',updatedValue)
   };
 
   return (
@@ -24,11 +37,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ content, fileName, onChange }) 
         <Editor
           height="100%"
           language={getLanguage(fileName)}
-          value={content}
-          onChange={(value) => onChange?.(value || '')}
+          value={editorContent}
+          onChange={handleEditorChange}
           theme="vs-dark"
           options={{
-            fontSize: 14,
+            fontSize: 16,
             lineNumbers: 'on',
             renderWhitespace: 'selection',
             minimap: { enabled: true },
