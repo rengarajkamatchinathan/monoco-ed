@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { motion } from 'framer-motion';
 
 interface CodeEditorProps {
   content: string;
@@ -45,12 +44,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ content, fileName, onChange }) 
   return (
     <div className="h-full bg-white/90 backdrop-blur-sm">
       {/* Enhanced Tab Bar */}
-      <motion.div 
-        className="flex items-center justify-between bg-gradient-to-r from-white/95 to-slate-50/95 backdrop-blur-xl border-b border-slate-200/50 px-6 py-3 shadow-sm"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
+      <div className="flex items-center justify-between bg-gradient-to-r from-white/95 to-slate-50/95 backdrop-blur-xl border-b border-slate-200/50 px-6 py-3 shadow-sm animate-slide-down">
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-slate-100 to-slate-200 rounded-lg border border-slate-200/50 shadow-sm">
             <span className={`material-symbols-outlined ${getFileColor(fileName)} text-lg`}>
@@ -72,15 +66,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ content, fileName, onChange }) 
             <div className="w-1 h-1 bg-slate-400 rounded-full" />
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Editor Container */}
-      <motion.div 
-        className="h-[calc(100%-60px)] relative"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-      >
+      <div className="h-[calc(100%-60px)] relative animate-fade-in" style={{ animationDelay: '0.1s' }}>
         {/* Subtle grid overlay */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
           <div className="w-full h-full" style={{
@@ -145,26 +134,18 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ content, fileName, onChange }) 
 
         {/* Floating action buttons */}
         <div className="absolute bottom-6 right-6 flex flex-col space-y-2">
-          <motion.button
-            className="w-10 h-10 bg-white/90 backdrop-blur-sm border border-slate-200/50 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
+          <button className="w-10 h-10 bg-white/90 backdrop-blur-sm border border-slate-200/50 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group hover:scale-110">
             <span className="material-symbols-outlined text-slate-600 group-hover:text-blue-600 text-sm">
               format_align_left
             </span>
-          </motion.button>
-          <motion.button
-            className="w-10 h-10 bg-white/90 backdrop-blur-sm border border-slate-200/50 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
+          </button>
+          <button className="w-10 h-10 bg-white/90 backdrop-blur-sm border border-slate-200/50 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group hover:scale-110">
             <span className="material-symbols-outlined text-slate-600 group-hover:text-green-600 text-sm">
               save
             </span>
-          </motion.button>
+          </button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

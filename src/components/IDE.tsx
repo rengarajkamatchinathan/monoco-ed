@@ -3,7 +3,6 @@ import { Menu, X, ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
 import FileTree from './FileTree';
 import CodeEditor from './CodeEditor';
 import Terminal from './Terminal';
-import { motion, AnimatePresence } from 'framer-motion';
 
 interface IDEProps {
   terraformData: any;
@@ -32,8 +31,8 @@ const IDE: React.FC<IDEProps> = ({ terraformData, onBackToPrompt }) => {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-200/30 to-indigo-200/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-200/30 to-pink-200/30 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-0 w-64 h-64 bg-gradient-to-r from-cyan-200/20 to-blue-200/20 rounded-full blur-2xl animate-pulse delay-500" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-200/30 to-pink-200/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-0 w-64 h-64 bg-gradient-to-r from-cyan-200/20 to-blue-200/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }} />
       </div>
 
       {/* Futuristic Grid Pattern */}
@@ -48,22 +47,15 @@ const IDE: React.FC<IDEProps> = ({ terraformData, onBackToPrompt }) => {
       </div>
 
       {/* Title Bar */}
-      <motion.div 
-        className="bg-white/80 backdrop-blur-xl border-b border-slate-200/50 px-6 py-4 flex items-center justify-between relative z-10 shadow-sm"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
+      <div className="bg-white/80 backdrop-blur-xl border-b border-slate-200/50 px-6 py-4 flex items-center justify-between relative z-10 shadow-sm animate-slide-down">
         <div className="flex items-center space-x-6">
-          <motion.button
+          <button
             onClick={onBackToPrompt}
-            className="group flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200/50"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            className="group flex items-center space-x-3 px-4 py-2 bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200/50 hover:scale-105"
           >
             <ArrowLeft className="w-4 h-4 text-slate-600 group-hover:text-slate-800 transition-colors" />
             <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900">Back to Prompt</span>
-          </motion.button>
+          </button>
           
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -72,12 +64,7 @@ const IDE: React.FC<IDEProps> = ({ terraformData, onBackToPrompt }) => {
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           
-          <motion.div
-            className="flex items-center space-x-3"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div className="flex items-center space-x-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
               <span className="text-white text-sm font-bold">TF</span>
             </div>
@@ -87,15 +74,10 @@ const IDE: React.FC<IDEProps> = ({ terraformData, onBackToPrompt }) => {
               </h1>
               <p className="text-xs text-slate-500">Terraform Development Environment</p>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          className="flex items-center space-x-4"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <div className="flex items-center space-x-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <div className="flex items-center space-x-2 px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full border border-blue-200/50">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className="text-xs font-medium text-slate-700">
@@ -111,51 +93,32 @@ const IDE: React.FC<IDEProps> = ({ terraformData, onBackToPrompt }) => {
           >
             {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <div className="flex-1 flex overflow-hidden relative z-10">
         {/* Sidebar */}
-        <AnimatePresence>
-          {sidebarOpen && (
-            <motion.div
-              className="w-80 overflow-hidden bg-white/70 backdrop-blur-xl border-r border-slate-200/50 shadow-lg"
-              initial={{ x: -320, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -320, opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <FileTree
-                files={infrastructure}
-                selectedFile={selectedFile}
-                onFileSelect={handleFileSelect}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className={`w-80 overflow-hidden bg-white/70 backdrop-blur-xl border-r border-slate-200/50 shadow-lg transition-all duration-400 ease-out ${
+          sidebarOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+        }`}>
+          <FileTree
+            files={infrastructure}
+            selectedFile={selectedFile}
+            onFileSelect={handleFileSelect}
+          />
+        </div>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col bg-white/50 backdrop-blur-sm">
           {/* Editor */}
-          <motion.div
-            className={`${terminalOpen ? 'h-2/3' : 'h-full'} transition-all duration-500 ease-out`}
-            key={selectedFile}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
+          <div className={`${terminalOpen ? 'h-2/3' : 'h-full'} transition-all duration-500 ease-out`}>
             {selectedFile ? (
-              <div className="h-full bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-tl-2xl shadow-lg overflow-hidden">
+              <div className="h-full bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-tl-2xl shadow-lg overflow-hidden animate-fade-in">
                 <CodeEditor content={selectedFileContent} fileName={selectedFile} />
               </div>
             ) : (
               <div className="h-full bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-tl-2xl shadow-lg flex items-center justify-center">
-                <motion.div
-                  className="text-center"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6 }}
-                >
+                <div className="text-center animate-fade-in">
                   <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-xl">
                     <span className="text-white text-2xl font-bold">TF</span>
                   </div>
@@ -163,53 +126,40 @@ const IDE: React.FC<IDEProps> = ({ terraformData, onBackToPrompt }) => {
                   <p className="text-slate-600 max-w-md">Select a file from the explorer to start editing your Terraform infrastructure code</p>
                   <div className="mt-6 flex justify-center space-x-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce delay-200" />
+                    <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                   </div>
-                </motion.div>
+                </div>
               </div>
             )}
-          </motion.div>
+          </div>
 
           {/* Terminal */}
-          <AnimatePresence>
-            {terminalOpen && (
-              <motion.div
-                className="h-1/3 border-t border-slate-200/50 overflow-hidden bg-white/70 backdrop-blur-xl shadow-lg"
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 100, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+          <div className={`h-1/3 border-t border-slate-200/50 overflow-hidden bg-white/70 backdrop-blur-xl shadow-lg transition-all duration-400 ease-out ${
+            terminalOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+          }`}>
+            <div className="h-full relative">
+              <button
+                onClick={() => setTerminalOpen(!terminalOpen)}
+                className="absolute top-3 right-3 z-10 p-2 hover:bg-slate-200/50 rounded-lg transition-colors bg-white/50 backdrop-blur-sm border border-slate-200/50"
               >
-                <div className="h-full relative">
-                  <button
-                    onClick={() => setTerminalOpen(!terminalOpen)}
-                    className="absolute top-3 right-3 z-10 p-2 hover:bg-slate-200/50 rounded-lg transition-colors bg-white/50 backdrop-blur-sm border border-slate-200/50"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                  <Terminal />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <X className="w-4 h-4" />
+              </button>
+              <Terminal />
+            </div>
+          </div>
 
           {/* Terminal Toggle */}
           {!terminalOpen && (
-            <motion.div
-              className="bg-white/80 backdrop-blur-xl border-t border-slate-200/50 px-6 py-4 shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
+            <div className="bg-white/80 backdrop-blur-xl border-t border-slate-200/50 px-6 py-4 shadow-lg animate-fade-in">
               <button
                 onClick={() => setTerminalOpen(true)}
-                className="flex items-center space-x-2 text-sm text-slate-600 hover:text-slate-800 transition-colors px-4 py-2 bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 rounded-xl border border-slate-200/50 shadow-sm hover:shadow-md"
+                className="flex items-center space-x-2 text-sm text-slate-600 hover:text-slate-800 transition-colors px-4 py-2 bg-gradient-to-r from-slate-100 to-slate-200 hover:from-slate-200 hover:to-slate-300 rounded-xl border border-slate-200/50 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
               >
                 <span className="material-symbols-outlined text-lg">terminal</span>
                 <span>Show Terminal</span>
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>

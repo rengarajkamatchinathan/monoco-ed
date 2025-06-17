@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from '@xterm/addon-fit';
-import { motion } from 'framer-motion';
 import 'xterm/css/xterm.css';
 
 const Terminal: React.FC = () => {
@@ -112,12 +111,7 @@ const Terminal: React.FC = () => {
   return (
     <div className="h-full bg-white/95 backdrop-blur-sm">
       {/* Enhanced Terminal Header */}
-      <motion.div 
-        className="flex items-center justify-between bg-gradient-to-r from-slate-100/90 to-slate-200/90 backdrop-blur-xl border-b border-slate-200/50 px-6 py-3 shadow-sm"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
+      <div className="flex items-center justify-between bg-gradient-to-r from-slate-100/90 to-slate-200/90 backdrop-blur-xl border-b border-slate-200/50 px-6 py-3 shadow-sm animate-slide-down">
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-slate-700 to-slate-900 rounded-lg flex items-center justify-center shadow-md">
@@ -140,16 +134,10 @@ const Terminal: React.FC = () => {
             <div className="w-3 h-3 bg-green-400 rounded-full hover:bg-green-500 cursor-pointer transition-colors" />
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Terminal Content */}
-      <motion.div 
-        ref={terminalRef} 
-        className="h-[calc(100%-60px)] p-4 relative"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-      >
+      <div ref={terminalRef} className="h-[calc(100%-60px)] p-4 relative animate-fade-in" style={{ animationDelay: '0.1s' }}>
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-[0.01] pointer-events-none">
           <div className="w-full h-full" style={{
@@ -160,7 +148,7 @@ const Terminal: React.FC = () => {
             backgroundSize: '10px 10px'
           }} />
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
